@@ -26,6 +26,8 @@ if __name__ == "__main__":
 		if sys.argv[3] == 'register':
 			Line = ('REGISTER sip:' + Addres + ' SIP/2.0\r\n' +
 			 		'Expires: ' + Expires + '\r\n\r\n')
+		else:
+			sys.exit("Argumentos: ip puerto register sip_addres expires_value") 
 		print("Enviando:", Line)
 		my_socket.send(bytes(Line, 'utf-8') + b'\r\n')
 		data = my_socket.recv(1024)
