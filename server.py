@@ -15,6 +15,13 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 	"""
     #Diccionario como atributo de clase
 	Users = {}
+	
+	def json2registered(self):
+		try:
+			with open("registered.json", 'r') as Users_Data:
+				self.Users = json.load(Users_Data)
+		except:
+			pass
 			
 	def handle(self):
 		self.wfile.write(b"SIP/2.0 200 OK")
@@ -24,6 +31,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 		Expires = int(Line.split(' ')[3].split('\r')[0])
 		Expires_Time = time.strftime('%Y-%m-%d %H:%M:%S', 
 									 time.gmtime(time.time() + Expires))
+		self.json2registered()
 		if Line.split(' ')[0] == 'REGISTER':
 			Addres = Line.split(' ')[1]
 			Addres = Addres.split(':')[1]
@@ -46,6 +54,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 					  separators=(',', ':'))
 					  
 	def deleteUsers(self):
+		"""Crea una lista con los usuarios expirados"""
 		Now = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time.time()))
 		To_Delete = []
 		for name in self.Users:
