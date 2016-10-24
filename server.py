@@ -17,6 +17,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 	Users = {}
 	
 	def json2registered(self):
+		"""Comprueba la existencia de json, si existe, actualiza diccionario"""
 		try:
 			with open("registered.json", 'r') as Users_Data:
 				self.Users = json.load(Users_Data)
@@ -24,6 +25,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 			pass
 			
 	def handle(self):
+		"""Nuestro manejador de la conexión"""
 		self.wfile.write(b"SIP/2.0 200 OK")
 		print("Nuevo cliente IP y puerto:", self.client_address)  
 		Line = self.rfile.read().decode('utf-8')
@@ -40,7 +42,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 								  'Expires': Expires_Time}
 		if Expires == '0':
 			del self.Users[Addres]
-		print(self.Users)
 		#creamos una lista con los usuarios a borrar
 		self.register2json()
 		Expire_List = self.deleteUsers()

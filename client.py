@@ -21,6 +21,7 @@ except IndexError:
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 if __name__ == "__main__":
+	"""Se crea socket y se manda register al servidor""""
 	with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
 		my_socket.connect((Server, Port))
 		if sys.argv[3] == 'register':
